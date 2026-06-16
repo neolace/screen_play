@@ -1,0 +1,24 @@
+services:
+  screen-play:
+    build: .
+    image: localhost/screen-play:latest
+    container_name: screen-play-runner
+    # Podman rootless needs no special seccomp, but Chromium needs these:
+    security_opt:
+      - seccomp=unconfined
+    cap_add:
+      - SYS_ADMIN
+    environment:
+      - SP_HEADLESS=true
+      - SP_BROWSER=chromium
+      - SP_VIEWPORT_WIDTH=1280
+      - SP_VIEWPORT_HEIGHT=720
+      - SP_SCREENSHOT_DELAY=300
+      - SP_OUTPUT_DIR=/app/reports
+    volumes:
+      # Mount local reports folder to retrieve annotated screenshots
+      - ./reports:/app/reports:Z
+      # Mount custom steps files (optional)
+      - ./steps:/app/steps:ro,Z
+    # Override CMD to run custom steps if needed:
+    # command: ["--steps", "/app/steps/my_test.py"]
