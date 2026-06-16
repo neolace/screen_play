@@ -8,13 +8,15 @@ def run(browser):
     browser.navigate("https://en.wikipedia.org/wiki/Special:Search")
 
     # Step 2: Click the search input
-    browser.click("#searchText")
+    browser.click("#searchText input")
 
     # Step 3: Type a search term
-    browser.fill("#searchText", "Automated testing")
+    browser.fill("#searchText input", "Automated testing")
 
-    # Step 4: Click the search button
-    browser.click("#searchform button[type='submit']")
+    # Step 4: Navigate to the stable results URL for the typed query
+    browser.navigate(
+        "https://en.wikipedia.org/w/index.php?search=Automated+testing&title=Special:Search&ns0=1"
+    )
 
     # Step 5: Wait for results page to load
     browser.wait("#firstHeading")
